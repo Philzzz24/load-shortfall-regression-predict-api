@@ -86,6 +86,50 @@ def load_model(path_to_model:str):
     any auxiliary functions required to process your model's artifacts.
 """
 
+# look at data statistics
+df_train.describe()
+
+df_sample.head(2)
+
+df_train.head(2)
+
+df_test.head(2)
+
+df_train.columns
+
+#Data Engineering 
+
+df = pd.concat([df_train, df_test])
+df.head()
+
+# remove missing values/ features
+df_train.isnull().sum()
+
+df_clean = df
+df_clean[ 'Valencia_pressure'] = df_clean['Valencia_pressure'].fillna(df_clean['Valencia_pressure'].mode()[0])
+
+df.isnull().sum()
+
+df_clean.isnull().sum()
+
+df_clean.dtypes
+
+df_clean['time']
+
+# create new features
+df_clean['Valencia_wind_deg'] = df_clean['Valencia_wind_deg'].str.extract('(\d+)')
+
+df_clean['Valencia_wind_deg'] = pd.to_numeric(df_clean['Valencia_wind_deg'])
+
+# engineer existing features
+df_clean.Seville_pressure = df_clean.Seville_pressure.str.extract('(\d+)')
+
+df_clean.Seville_pressure = pd.to_numeric(df_clean.Seville_pressure)
+
+df_clean = df_clean.drop(['Unnamed: 0', 'time'], axis=1)
+
+df_clean.head()
+
 def make_prediction(data, model):
     """Prepare request data for model prediction.
 
@@ -102,6 +146,10 @@ def make_prediction(data, model):
         A 1-D python list containing the model prediction.
 
     """
+
+
+
+
     # Data preprocessing.
     prep_data = _preprocess_data(data)
     # Perform prediction with model and preprocessed data.

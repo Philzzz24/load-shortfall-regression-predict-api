@@ -60,9 +60,9 @@ def _preprocess_data(data):
     # ----------- Replace this code with your own preprocessing steps --------
     #predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
     predict_vector = feature_vector_df.drop(['Unnamed: 0', 'time'], axis=1)
-    predict_vector.['Valencia_pressure'].fillna(predict_vector['Valencia_pressure'].mode()[0])
-    predict_vector.['Valencia_wind_deg'].str.extract('(\d+)').astype('int64')
-    predict_vector.['Seville_pressure'].str.extract('(\d+)').astype('int64')
+    predict_vector['Valencia_pressure'].fillna(predict_vector['Valencia_pressure'].mode()[0])
+    predict_vector['Valencia_wind_deg'].str.extract('(\d+)').astype('int64')
+    predict_vector['Seville_pressure'].str.extract('(\d+)').astype('int64')
     # ------------------------------------------------------------------------
 
     return predict_vector

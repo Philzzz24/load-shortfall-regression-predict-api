@@ -58,7 +58,11 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-    predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
+    #predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
+    predict_vector = feature_vector_df.drop(['Unnamed: 0', 'time'], axis=1)
+    predict_vector.['Valencia_pressure'].fillna(predict_vector['Valencia_pressure'].mode()[0])
+    predict_vector.['Valencia_wind_deg'].str.extract('(\d+)').astype('int64')
+    predict_vector.['Seville_pressure'].str.extract('(\d+)').astype('int64')
     # ------------------------------------------------------------------------
 
     return predict_vector
@@ -86,49 +90,6 @@ def load_model(path_to_model:str):
     any auxiliary functions required to process your model's artifacts.
 """
 
-# look at data statistics
-df_train.describe()
-
-df_sample.head(2)
-
-df_train.head(2)
-
-df_test.head(2)
-
-df_train.columns
-
-#Data Engineering 
-
-df = pd.concat([df_train, df_test])
-df.head()
-
-# remove missing values/ features
-df_train.isnull().sum()
-
-df_clean = df
-df_clean[ 'Valencia_pressure'] = df_clean['Valencia_pressure'].fillna(df_clean['Valencia_pressure'].mode()[0])
-
-df.isnull().sum()
-
-df_clean.isnull().sum()
-
-df_clean.dtypes
-
-df_clean['time']
-
-# create new features
-df_clean['Valencia_wind_deg'] = df_clean['Valencia_wind_deg'].str.extract('(\d+)')
-
-df_clean['Valencia_wind_deg'] = pd.to_numeric(df_clean['Valencia_wind_deg'])
-
-# engineer existing features
-df_clean.Seville_pressure = df_clean.Seville_pressure.str.extract('(\d+)')
-
-df_clean.Seville_pressure = pd.to_numeric(df_clean.Seville_pressure)
-
-df_clean = df_clean.drop(['Unnamed: 0', 'time'], axis=1)
-
-df_clean.head()
 
 def make_prediction(data, model):
     """Prepare request data for model prediction.
